@@ -102,77 +102,194 @@
     #loading {
         display: none;
         margin-top: 10px;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image Upscaler Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1200&q=80') no-repeat center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Glass card */
+.container {
+    width: 95%;
+    max-width: 420px;
+    padding: 25px;
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.18);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    color: white;
+}
+
+/* Upload button */
+.upload-box {
+    padding: 18px;
+    border: 2px dashed rgba(255,255,255,0.4);
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.upload-box:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Loader */
+.loader {
+    margin-top: 15px;
+    display: none;
+    text-align: center;
+}
+
+.loader div {
+    width: 18px;
+    height: 18px;
+    margin: 3px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bounce 0.6s infinite alternate;
+    background: white;
+}
+
+@keyframes bounce {
+    to { transform: translateY(-10px); }
+}
+
+/* Before / After Slider */
+.slider-container {
+    position: relative;
+    height: 220px;
+    margin-top: 15px;
+}
+
+.slider-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+}
+
+#after {
+    width: 50%;
+    overflow: hidden;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.radio-box {
+    margin: 10px 0;
+}
+
+.button {
+    margin-top: 12px;
+    padding: 12px;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    font-weight: bold;
+}
 </style>
+
 </head>
 <body>
 
-<div class="card">
-    <h1>Image Upscaler Pro</h1>
+<div class="container">
 
-    <label class="upload-box" for="fileInput">
-        <strong>Tap to Upload Image</strong><br>
-        <small>(JPG / PNG)</small>
+    <h2 style="margin-top:0;">Image Upscaler Pro</h2>
+
+    <label class="upload-box">
+        <input type="file" id="upload" hidden accept="image/*">
+        Tap to Upload Image
     </label>
 
-    <input type="file" id="fileInput">
+    <div class="radio-box">
+        <label><input type="radio" name="scale" value="2" checked> 2×</label>
+        &nbsp;&nbsp;
+        <label><input type="radio" name="scale" value="4"> 4×</label>
+    </div>
 
-    <img id="preview" class="preview-img">
+    <div class="loader" id="loader">
+        <div></div><div></div><div></div>
+        <p>Upscaling…</p>
+    </div>
 
-    <select id="scale" class="select">
-        <option value="2">Upscale to 2×</option>
-        <option value="4">Upscale to 4×</option>
-    </select>
+    <div class="slider-container" id="sliderBox" style="display:none;">
+        <img id="before">
+        <img id="after">
+        <input type="range" id="slider" min="0" max="100" value="50">
+    </div>
 
-    <button class="btn" id="upscaleBtn">Upscale Image</button>
+    <a id="download" class="button" style="display:none;">Download Upscaled Image</a>
 
-    <p id="loading">Processing… please wait ⚙️</p>
 </div>
 
-
 <script>
-let selectedFile = null;
+const apiURL = "https://green-water-72c1.mjat49032.workers.dev/";
 
-// Auto preview
-document.getElementById("fileInput").addEventListener("change", function(e) {
-    selectedFile = e.target.files[0];
-    if (!selectedFile) return;
+document.getElementById("upload").addEventListener("change", processImage);
 
-    const preview = document.getElementById("preview");
-    preview.src = URL.createObjectURL(selectedFile);
-    preview.style.display = "block";
-});
+async function processImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
 
-// Upscale logic
-document.getElementById("upscaleBtn").addEventListener("click", async function() {
-    if (!selectedFile) {
-        alert("Please upload an image first.");
-        return;
-    }
+    const scale = document.querySelector("input[name='scale']:checked").value;
 
-    let scale = document.getElementById("scale").value;
+    // Before preview
+    const beforeURL = URL.createObjectURL(file);
+    document.getElementById("before").src = beforeURL;
+    document.getElementById("sliderBox").style.display = "none";
 
-    document.getElementById("loading").style.display = "block";
+    // Show loader
+    document.getElementById("loader").style.display = "block";
 
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("scale", scale);
+    const form = new FormData();
+    form.append("file", file);
 
-    // free public upscaler endpoint
-    const res = await fetch("https://api.imgupscaler.com/free-upscale", {
+    const res = await fetch(apiURL + "?scale=" + scale, {
         method: "POST",
-        body: formData
+        body: form
     });
 
     const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
+    const afterURL = URL.createObjectURL(blob);
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `upscaled_${scale}x.png`;
-    a.click();
+    // After Preview
+    document.getElementById("after").src = afterURL;
 
-    document.getElementById("loading").style.display = "none";
+    // Show slider comparison
+    document.getElementById("sliderBox").style.display = "block";
+
+    // Hide loader
+    document.getElementById("loader").style.display = "none";
+
+    // Download
+    const d = document.getElementById("download");
+    d.href = afterURL;
+    d.download = "upscaled_x" + scale + ".png";
+    d.style.display = "block";
+}
+
+// Slider movement
+document.getElementById("slider").addEventListener("input", function() {
+    document.getElementById("after").style.clipPath =
+      "inset(0 " + (100 - this.value) + "% 0 0)";
 });
 </script>
 
