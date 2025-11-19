@@ -2,110 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Upscaler Pro</title>
-
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background: url('https://images.unsplash.com/photo-1501877008226-4fca48ee50c1?auto=format&fit=crop&w=1500&q=60')
-                    no-repeat center center/cover;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        color: #fff;
-    }
-
-    .card {
-        width: 90%;
-        max-width: 430px;
-        padding: 25px;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.12);
-        box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.25);
-        text-align: center;
-    }
-
-    h1 {
-        font-size: 28px;
-        margin-bottom: 12px;
-        background: linear-gradient(45deg, #ffffff, #a7fffa);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-    }
-
-    .upload-box {
-        border: 2px dashed rgba(255, 255, 255, 0.4);
-        padding: 20px;
-        border-radius: 12px;
-        cursor: pointer;
-        margin-bottom: 20px;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        transition: 0.3s;
-    }
-
-    .upload-box:hover {
-        background: rgba(255,255,255,0.12);
-    }
-
-    input[type="file"] {
-        display: none;
-    }
-
-    .preview-img {
-        width: 100%;
-        margin-top: 15px;
-        border-radius: 12px;
-        display: none;
-    }
-
-    .select {
-        margin: 10px 0 20px 0;
-        padding: 10px;
-        width: 100%;
-        border-radius: 10px;
-        border: none;
-        font-size: 15px;
-        backdrop-filter: blur(10px);
-        background: rgba(255,255,255,0.3);
-        color: #000;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .btn {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(10px);
-        font-weight: bold;
-        color: #000;
-        transition: 0.3s;
-    }
-
-    .btn:hover {
-        background: rgba(255,255,255,0.5);
-        transform: scale(1.04);
-    }
-
-    #loading {
-        display: none;
-        margin-top: 10px;
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
 <title>Image Upscaler Pro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -121,7 +17,7 @@ body {
     align-items: center;
 }
 
-/* Glass card */
+/* Glass card container */
 .container {
     width: 95%;
     max-width: 420px;
@@ -146,13 +42,12 @@ body {
     background: rgba(255,255,255,0.1);
 }
 
-/* Loader */
+/* Loader hidden by default */
 .loader {
     margin-top: 15px;
-    display: none;
     text-align: center;
+    display: none;
 }
-
 .loader div {
     width: 18px;
     height: 18px;
@@ -162,37 +57,29 @@ body {
     animation: bounce 0.6s infinite alternate;
     background: white;
 }
-
 @keyframes bounce {
     to { transform: translateY(-10px); }
 }
 
-/* Before / After Slider */
+/* Before-After slider container */
 .slider-container {
     position: relative;
     height: 220px;
     margin-top: 15px;
+    display: none; /* HIDDEN BY DEFAULT */
 }
-
 .slider-container img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     position: absolute;
 }
-
 #after {
-    width: 50%;
-    overflow: hidden;
+    clip-path: inset(0 50% 0 0);
 }
-
 input[type="range"] {
     width: 100%;
     margin-top: 10px;
-}
-
-.radio-box {
-    margin: 10px 0;
 }
 
 .button {
@@ -204,6 +91,7 @@ input[type="range"] {
     background: rgba(255,255,255,0.2);
     cursor: pointer;
     font-weight: bold;
+    display: none; /* HIDDEN BEFORE UPLOAD */
 }
 </style>
 
@@ -211,7 +99,6 @@ input[type="range"] {
 <body>
 
 <div class="container">
-
     <h2 style="margin-top:0;">Image Upscaler Pro</h2>
 
     <label class="upload-box">
@@ -219,77 +106,85 @@ input[type="range"] {
         Tap to Upload Image
     </label>
 
-    <div class="radio-box">
+    <div class="radio-box" style="margin:10px 0;">
         <label><input type="radio" name="scale" value="2" checked> 2×</label>
         &nbsp;&nbsp;
         <label><input type="radio" name="scale" value="4"> 4×</label>
     </div>
 
+    <!-- Loader -->
     <div class="loader" id="loader">
         <div></div><div></div><div></div>
         <p>Upscaling…</p>
     </div>
 
-    <div class="slider-container" id="sliderBox" style="display:none;">
+    <!-- Before / After Slider -->
+    <div class="slider-container" id="sliderBox">
         <img id="before">
         <img id="after">
         <input type="range" id="slider" min="0" max="100" value="50">
     </div>
 
-    <a id="download" class="button" style="display:none;">Download Upscaled Image</a>
+    <a id="download" class="button">Download Upscaled Image</a>
 
 </div>
+
 
 <script>
 const apiURL = "https://green-water-72c1.mjat49032.workers.dev/";
 
-document.getElementById("upload").addEventListener("change", processImage);
+// Handle upload
+document.getElementById("upload").addEventListener("change", async function(e) {
 
-async function processImage(e) {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Reset UI
+    document.getElementById("sliderBox").style.display = "none";
+    document.getElementById("download").style.display = "none";
+
     const scale = document.querySelector("input[name='scale']:checked").value;
 
-    // Before preview
+    // Show before image
     const beforeURL = URL.createObjectURL(file);
     document.getElementById("before").src = beforeURL;
-    document.getElementById("sliderBox").style.display = "none";
 
     // Show loader
     document.getElementById("loader").style.display = "block";
 
+    // Send to API
     const form = new FormData();
     form.append("file", file);
 
-    const res = await fetch(apiURL + "?scale=" + scale, {
+    const response = await fetch(apiURL + "?scale=" + scale, {
         method: "POST",
         body: form
     });
 
-    const blob = await res.blob();
+    const blob = await response.blob();
     const afterURL = URL.createObjectURL(blob);
 
-    // After Preview
+    // Show after image
     document.getElementById("after").src = afterURL;
-
-    // Show slider comparison
-    document.getElementById("sliderBox").style.display = "block";
 
     // Hide loader
     document.getElementById("loader").style.display = "none";
 
-    // Download
-    const d = document.getElementById("download");
+    // Show slider UI
+    document.getElementById("sliderBox").style.display = "block";
+
+    // Show download button
+    let d = document.getElementById("download");
     d.href = afterURL;
     d.download = "upscaled_x" + scale + ".png";
     d.style.display = "block";
-}
+});
 
-// Slider movement
+// Slider functionality
 document.getElementById("slider").addEventListener("input", function() {
+    let val = this.value;
     document.getElementById("after").style.clipPath =
-      "inset(0 " + (100 - this.value) + "% 0 0)";
+        "inset(0 " + (100 - val) + "% 0 0)";
 });
 </script>
 
