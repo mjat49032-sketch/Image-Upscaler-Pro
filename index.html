@@ -10,50 +10,57 @@
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #232323, #111);
-        color: #fff;
+        background: url('https://images.unsplash.com/photo-1501877008226-4fca48ee50c1?auto=format&fit=crop&w=1500&q=60')
+                    no-repeat center center/cover;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+        backdrop-filter: blur(10px);
     }
 
     .card {
         width: 90%;
         max-width: 420px;
-        background: #1b1b1b;
         padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 8px 35px rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.25);
         text-align: center;
+        color: #fff;
     }
 
     h1 {
-        font-size: 26px;
-        margin-bottom: 10px;
-        background: linear-gradient(45deg, #ff7efc, #7af2ff);
+        font-size: 28px;
+        margin-bottom: 12px;
+        background: linear-gradient(45deg, #ffffff, #9bf7ff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        font-weight: bold;
     }
 
     p {
-        color: #ccc;
-        font-size: 14px;
+        color: #eee;
+        font-size: 15px;
         margin-bottom: 20px;
     }
 
     .upload-box {
-        border: 2px dashed #555;
+        border: 2px dashed rgba(255, 255, 255, 0.4);
         padding: 25px;
-        border-radius: 10px;
+        border-radius: 12px;
         margin-bottom: 20px;
         cursor: pointer;
         transition: 0.3s;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
     }
 
     .upload-box:hover {
-        border-color: #7af2ff;
-        background: rgba(255,255,255,0.05);
+        background: rgba(255, 255, 255, 0.15);
     }
 
     input[type="file"] {
@@ -64,36 +71,149 @@
         width: 100%;
         padding: 12px;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         font-size: 16px;
-        margin-top: 10px;
         cursor: pointer;
-        background: linear-gradient(45deg, #7af2ff, #ff7efc);
-        color: #000;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
         font-weight: bold;
+        color: #000;
         transition: 0.3s;
     }
 
     .btn:hover {
-        transform: scale(1.03);
+        transform: scale(1.04);
+        background: rgba(255, 255, 255, 0.5);
     }
-</style>
 
+</style>
 </head>
 <body>
 
 <div class="card">
     <h1>Image Upscaler Pro</h1>
-    <p>Increase resolution of your images using AI magic ✨</p>
+    <p>Enhance your photos with free AI upscaling</p>
 
     <label class="upload-box" for="fileInput">
-        <strong>Click to Upload Image</strong><br>
-        <small>(JPG / PNG supported)</small>
+        <strong>Tap to Upload Image</strong><br>
+        <small>(JPG / PNG)</small>
     </label>
 
     <input type="file" id="fileInput">
 
-    <button class="btn">Upscale Now</button>
+    <button class="btn" onclick="alert('Upscaler not connected yet 😅')">Upscale Image</button>
+</div>
+
+</body>
+</html>    }
+
+    p {
+        color: #ccc;
+        font-size: 14px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Upscaler Pro</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: url('https://images.unsplash.com/photo-1501877008226-4fca48ee50c1?auto=format&fit=crop&w=1500&q=60')
+                    no-repeat center center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        backdrop-filter: blur(10px);
+    }
+
+    .card {
+        width: 90%;
+        max-width: 420px;
+        padding: 25px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 8px 35px rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.25);
+        text-align: center;
+        color: #fff;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 12px;
+        background: linear-gradient(45deg, #ffffff, #9bf7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+    }
+
+    p {
+        color: #eee;
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+    .upload-box {
+        border: 2px dashed rgba(255, 255, 255, 0.4);
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+    }
+
+    .upload-box:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        font-weight: bold;
+        color: #000;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        transform: scale(1.04);
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Image Upscaler Pro</h1>
+    <p>Enhance your photos with free AI upscaling</p>
+
+    <label class="upload-box" for="fileInput">
+        <strong>Tap to Upload Image</strong><br>
+        <small>(JPG / PNG)</small>
+    </label>
+
+    <input type="file" id="fileInput">
+
+    <button class="btn" onclick="alert('Upscaler not connected yet 😅')">Upscale Image</button>
 </div>
 
 </body>
