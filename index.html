@@ -1,12 +1,100 @@
-<!DOCTYPEHTML>
-<html>
-  <head>
-    <title>Image Upscaler Pro</title>
-  </head>
-  <body>
-    <h1>Welcome to Image Upscaler Pro 🫡</h1>
-<h2>Work in progress. In some days you will able to enhance you image here</h2>
-<h3>Developer: Manish😅</h3>
-  </body>
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Upscaler Pro</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #232323, #111);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .card {
+        width: 90%;
+        max-width: 420px;
+        background: #1b1b1b;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 10px;
+        background: linear-gradient(45deg, #ff7efc, #7af2ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    p {
+        color: #ccc;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .upload-box {
+        border: 2px dashed #555;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .upload-box:hover {
+        border-color: #7af2ff;
+        background: rgba(255,255,255,0.05);
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        background: linear-gradient(45deg, #7af2ff, #ff7efc);
+        color: #000;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        transform: scale(1.03);
+    }
+</style>
+
+</head>
+<body>
+
+<div class="card">
+    <h1>Image Upscaler Pro</h1>
+    <p>Increase resolution of your images using AI magic ✨</p>
+
+    <label class="upload-box" for="fileInput">
+        <strong>Click to Upload Image</strong><br>
+        <small>(JPG / PNG supported)</small>
+    </label>
+
+    <input type="file" id="fileInput">
+
+    <button class="btn">Upscale Now</button>
+</div>
+
+</body>
 </html>
